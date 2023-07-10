@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+
+{% block title %}chatLLM{% endblock %}
+
+
+{% block header %}
+
+{% endblock %}
+
+{% block content %}
+    <div class="h-[100vh] bg-stone-200 w-full flex flex-col justify-end">
+        <div class="h-14 w-full mb-6"></div>
+        <div class="h-[90vh] w-full">
+
+            <div class="h-[97%]  sm:h-[98%] m-auto w-11/12 sm:w-5/6 bg-stone-200 rounded-lg sm:rounded-xl">
+                <div id="chat-scrollable-container"
+                     class="flex flex-col w-full py-2 px-0 sm:px-2 sm:p-4 spacy-y-1 sm:space-y-2 max-h-full overflow-y-scroll">
+                    <div class=" mt-20 w-full space-y-4">
+                        <div class="text-6xl font-bold w-fit mx-auto">chatLLM</div>
+                        <div class="text-center text-xl sm:text-2xl sm:tracking-wide lg:tracking-normal w-fit text-stone-600 mx-auto">
+                            Chat with <span class="sm:text-purple-800 text-rose-400">{{ model }}</span> by sending a
+                            message
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+        <div id="chat-input-container" class="w-1/2 mx-auto">
+            <form class="flex h-[6vh] w-full sm:w-5/6 mx-auto  px-2 sm:px-0 space-x-1"
+                  hx-post="{% url 'process_prompt' %}" hx-target="#chat-scrollable-container">
+                <input id="chat-input"
+                       class="h-11 w-9/12 sm:w-10/12 rounded-lg border-gray-600 border text-stone-800 p-2 px-5 mr-1 focus:outline-none"
+                       type="text" placeholder="Send a message..." name='prompt' required>
+                <button id="send-button"
+                        class="h-9 w-3/12 sm:w-2/12 px-4  bg-black text-white rounded-lg hover:bg-indigo-500 transition duration-100 mt-1"
+                        type="submit">
+                    <i class="fa-solid fa-paper-plane-top"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+
+
+{% endblock %}

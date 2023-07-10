@@ -1,0 +1,27 @@
+{% for message in messages %}
+    <!-- <div class="border-4">
+        <h1>{{ message.role }}</h1>
+        <p>{{ message.content }}</p>
+
+        
+    </div> -->
+    <div id="content" class="w-full flex">
+        {% if message.role == 'assistant' %}
+        <div class="flex justify-end w-full">
+            <div class=" max-w-[75%] flex flex-col">
+                <div class="flex justify-end pr-2 pb-1 text-xs text-purple-700 text-opacity-80">{{message.role}}</div>
+                <div class="shadow text-white bg-purple-600 leading-7 tracking-wide rounded-lg p-2">{{message.content}}</div>
+            </div>
+        </div>
+        {% else %}
+        <div class="max-w-[75%] my-1 sm:my-2">
+            <div class="">
+                <div class="pl-1 pb-1 text-gray-500 text-xs">{{message.role}}</div>
+                <div class="text-gray-700 rounded-lg bg-white p-2 shadow">{{message.content}}</div>
+            </div> 
+        </div>    
+        {% endif %}
+    </div>
+
+
+{% endfor %}
