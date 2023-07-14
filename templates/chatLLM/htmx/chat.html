@@ -6,7 +6,7 @@
         
     </div> -->
     <div id="content" class="w-full flex">
-        {% if message.role == 'assistant' %}
+        {% if message.role == model %}
         <div class="flex justify-end w-full">
             <div class=" max-w-[75%] flex flex-col">
                 <div class="flex justify-end pr-2 pb-1 text-xs text-purple-700 text-opacity-80">{{message.role}}</div>

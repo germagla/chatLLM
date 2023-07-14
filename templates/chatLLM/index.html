@@ -10,15 +10,15 @@
 
 {% block content %}
     <div class="h-[100vh] bg-stone-200 w-full flex flex-col justify-end">
-        <div class="h-14 w-full mb-6"></div>
+        <div class="h-14 w-full mb-6 bg-stone-200"></div>
         <div class="h-[90vh] w-full">
 
             <div class="h-[97%]  sm:h-[98%] m-auto w-11/12 sm:w-5/6 bg-stone-200 rounded-lg sm:rounded-xl">
                 <div id="chat-scrollable-container"
-                     class="flex flex-col w-full py-2 px-0 sm:px-2 sm:p-4 spacy-y-1 sm:space-y-2 max-h-full overflow-y-scroll">
-                    <div class=" mt-20 w-full space-y-4">
-                        <div class="text-6xl font-bold w-fit mx-auto">chatLLM</div>
-                        <div class="text-center text-xl sm:text-2xl sm:tracking-wide lg:tracking-normal w-fit text-stone-600 mx-auto">
+                     class="flex flex-col w-full py-2 px-0 sm:px-2 sm:p-4 spacy-y-1 sm:space-y-2 max-h-full overflow-y-scroll bg-stone-200">
+                    <div class=" mt-20 w-full space-y-4 bg-stone-200">
+                        <div class="text-6xl font-bold w-fit mx-auto bg-stone-200">chatLLM</div>
+                        <div class="text-center text-xl sm:text-2xl sm:tracking-wide lg:tracking-normal w-fit text-stone-600 mx-auto bg-stone-200">
                             Chat with <span class="sm:text-purple-800 text-rose-400">{{ model }}</span> by sending a
                             message
                         </div>

@@ -8,7 +8,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 openai.api_key = os.environ.get('OPENAI_API_KEY')
-model = 'gpt-4'
+model = 'gpt-3.5-turbo'
 
 prompt = ''
 conversation = []
@@ -23,7 +23,7 @@ def index(request):
         # ... more messages ...
     ]
 
-    return render(request, 'gpt4chat/index.html', {'model': model})
+    return render(request, 'chatLLM/index.html', {'model': model})
 
 
 def process_prompt(request):
@@ -39,7 +39,10 @@ def process_prompt(request):
         messages=conversation,
     )
     conversation.append(response.choices[0].message)
+    for item in conversation:
+        if item['role'] == 'assistant':
+            item['role'] = f'{model}'
 
-    return render(request, 'gpt4chat/htmx/chat.html', {'messages': conversation[3:]})
+    return render(request, 'chatLLM/htmx/chat.html', {'messages': conversation[3:], 'model': model})
 
     # return HttpResponse(response.choices[0].message)
