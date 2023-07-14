@@ -1,0 +1,2 @@
+# chatLLM
+ChatLLM is a web app that allows users to chat with different large language models (LLMs). It was created using Django, HTMX, and AWS. The app allows users to choose from a variety of LLMs, including GPT-3, Jurassic-1 Jumbo, and Bloom. Once a user has selected an LLM, they can start chatting with it by typing in a question or statement. The LLM will then respond with a text response. Users can also ask the LLM to generate text, translate text, write different kinds of creative content, and answer your questions in an informative way.
