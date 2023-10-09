@@ -10,7 +10,7 @@ from .models import Conversation, Message
 load_dotenv()
 
 openai.api_key = os.environ.get('OPENAI_API_KEY')
-model = 'gpt-3.5-turbo'
+models = ['gpt-3.5-turbo', 'gpt-3.5-turbo-16k', 'gpt-4', 'gpt-4-32k']
 
 
 def index(request):
@@ -24,7 +24,7 @@ def index(request):
         for message in messages:
             message_list.append({'role': message.role, 'content': message.text})
 
-        return render(request, 'chatLLM/index.html', {'model': model, 'messages': message_list[3:]})
+        return render(request, 'chatLLM/index.html', {'models': models, 'messages': message_list[3:]})
     else:
         # If the user does not have a conversation cookie, create a new conversation object
         conversation = Conversation.objects.create(date_started=datetime.datetime.today(), title='Main Conversation')
@@ -39,7 +39,7 @@ def index(request):
         # Save the messages
         conversation.save()
 
-        response = render(request, 'chatLLM/index.html', {'model': model})
+        response = render(request, 'chatLLM/index.html', {'models': models})
         response.set_cookie('conversation_id', conversation.id)
         return response
 
@@ -50,6 +50,7 @@ def process_prompt(request):
 
     # Get the prompt from the user
     prompt = request.POST.get('prompt')
+    model = request.POST.get('selected_model')
     # Create a message object for the prompt
     Message.objects.create(text=prompt, role='user', conversation=conversation)
 
@@ -61,10 +62,15 @@ def process_prompt(request):
         message_list.append({'role': message.role, 'content': message.text})
 
     # Get the response from OpenAI
-    response = openai.ChatCompletion.create(
-        model=model,
-        messages=message_list,
-    )
+    try:
+        response = openai.ChatCompletion.create(
+            model=model,
+            messages=message_list,
+        )
+    except Exception as e:
+        print(e)
+        message_list.append({'role': 'assistant', 'content': 'Sorry, I am having trouble connecting to OpenAI.'})
+        return render(request, 'chatLLM/htmx/chat.html', {'messages': message_list[3:], 'models': models})
     # Create a message object for the response
     Message.objects.create(text=response.choices[0].message.content, role='assistant', conversation=conversation)
     # Save the messages
@@ -73,7 +79,7 @@ def process_prompt(request):
     # Create a list of messages
     message_list.append({'role': 'assistant', 'content': response.choices[0].message.content})
 
-    return render(request, 'chatLLM/htmx/chat.html', {'messages': message_list[3:], 'model': model})
+    return render(request, 'chatLLM/htmx/chat.html', {'messages': message_list[3:], 'models': models})
 
 
 def clear_conversation(request):

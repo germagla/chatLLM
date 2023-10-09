@@ -7,23 +7,50 @@
 
 
 {% block content %}
-    <div class="h-[100vh] bg-stone-200 w-full flex flex-col justify-end">
+    <div class="h-[100vh] bg-stone-200 w-full flex flex-col justify-end"
+         x-data="{
+        selectedModel: 'gpt-3.5-turbo',
+        models: null,
+        conversation: null,
+    }">
         <div class="h-14 w-full mb-6 bg-stone-200"></div>
         <div class="h-[90vh] w-full">
 
             <div class="h-[97%]  sm:h-[98%] m-auto w-11/12 sm:w-5/6 bg-stone-200 rounded-lg sm:rounded-xl">
                 <div id="chat-scrollable-container"
-                     class="flex flex-col w-full py-2 px-0 sm:px-2 sm:p-4 spacy-y-1 sm:space-y-2 max-h-full overflow-y-scroll bg-stone-200">
-
+                     class="flex flex-col w-full py-2 px-0 sm:px-2 sm:p-4 spacy-y-1 sm:space-y-2 max-h-full overflow-y-scroll bg-stone-200"
+                     x-data
+                     x-ref="chatContainer"
+                     x-init="$refs.chatContainer.scrollTop = $refs.chatContainer.scrollHeight"
+                     x-on:htmx:after-swap="$refs.chatContainer.scrollTop = $refs.chatContainer.scrollHeight; $refs.sendButton.disabled = true;">
                     {% if messages %}
                         {% include 'chatLLM/htmx/chat.html' %}
                     {% else %}
                         <div class=" mt-20 w-full space-y-4 bg-stone-200">
                             <div class="text-6xl font-bold w-fit mx-auto bg-stone-200">chatLLM</div>
-                            <div class="text-center text-xl sm:text-2xl sm:tracking-wide lg:tracking-normal w-fit text-stone-600 mx-auto bg-stone-200">
-                                Chat with <span class="sm:text-purple-800 text-rose-400">{{ model }}</span> by sending a
+                            <div class="text-center text-xl sm:text-2xl sm:tracking-wide lg:tracking-normal w-fit text-stone-600 mx-auto bg-stone-200"
+                                 x-data="{ selectedWidth: 'auto' }">
+                                Chat with
+                                <select
+                                        class="bg-gray-700 text-gray-100 rounded-md text-center py-2 px-2 shadow-md"
+                                        x-model="selectedModel"
+                                        x-bind:style="'width:' + selectedWidth"
+                                        x-on:change="selectedWidth = 2+$event.target.options[$event.target.selectedIndex].text.length + 'ch';console.log(selectedModel);"
+                                        x-init="console.log(selectedModel);">
+                                    {% for model in models %}
+                                        <option value={{ model }}>{{ model }}</option>
+                                    {% endfor %}
+                                    {#                                    <option>gpt-3.5-turbo</option>#}
+                                    {#                                    <option>gpt-3.5-turbo-16k</option>#}
+                                    {#                                    <option>gpt-4</option>#}
+                                    {#                                    <option>gpt-4-32k</option>#}
+                                </select> by sending a
                                 message
                             </div>
+                            {#                            <div class="text-center text-xl sm:text-2xl sm:tracking-wide lg:tracking-normal w-fit text-stone-600 mx-auto bg-stone-200">#}
+                            {#                                Chat with <span class="sm:text-purple-800 text-rose-400">{{ model }}</span> by sending a#}
+                            {#                                message#}
+                            {#                            </div>#}
                         </div>
                     {% endif %}
 
@@ -33,20 +60,36 @@
         </div>
 
         <div id="chat-input-container" class="w-1/2 mx-auto">
-            <form class="flex h-[6vh] w-full sm:w-5/6 mx-auto  px-2 sm:px-0 space-x-1"
-                  hx-post="{% url 'process_prompt' %}" hx-target="#chat-scrollable-container">
+            <form x-data="{ message: '', isDisabled: false }"
+                  class="flex h-[6vh] w-full sm:w-5/6 mx-auto  px-2 sm:px-0 space-x-1"
+                  hx-post="{% url 'process_prompt' %}"
+                  hx-target="#chat-scrollable-container"
+                  hx-trigger="submit"
+                  x-on:submit="message = ''; isDisabled = true; $refs.sendButton.disabled = true;"
+                  x-init="$el.addEventListener('htmx:afterSwap', () => {isDisabled = false;$refs.sendButton.disabled = false;});">
+
                 <input id="chat-input"
-                       class="h-11 w-9/12 sm:w-10/12 rounded-lg border-gray-600 shadow-2xl text-stone-800 p-2 px-5 mr-1 focus:outline-none"
-                       type="text" placeholder="Send a message..." name='prompt' required>
+                       autocomplete="off"
+                       autocapitalize="on"
+                       autofocus
+                       class="h-11 w-9/12 sm:w-10/12 rounded-lg border-gray-600 shadow-inner text-stone-800 p-2 px-5 mr-1 focus:outline-none"
+                       type="text"
+                       placeholder="Send a message..."
+                       name='prompt'
+                       required
+                       x-model="message">
+                <input type="hidden" name="selected_model" x-model="selectedModel">
+
                 <button id="send-button"
-                        class="h-9 w-3/12 sm:w-2/12 px-4  bg-black text-white rounded-lg hover:bg-indigo-500 transition duration-100 mt-1"
-                        type="submit">
+                        class="h-9 w-3/12 sm:w-2/12 px-4 bg-indigo-950 disabled:bg-gray-300 disabled:cursor-not-allowed text-white rounded-lg hover:bg-indigo-700 transition duration-100 mt-1"
+                        type="submit"
+                        x-ref="sendButton"
+                        x-bind:disabled="isDisabled">
                     Send
                 </button>
                 <button id="clear-button"
                         type="button"
-
-                        class="h-9 w-3/12 sm:w-2/12 px-4  bg-red-950 text-white rounded-lg hover:bg-indigo-500 transition duration-100 mt-1">
+                        class="h-9 w-3/12 sm:w-2/12 px-4  bg-red-950 text-white rounded-lg hover:bg-red-700 transition duration-100 mt-1">
                     <a href="{% url 'clear_conversation' %}">Clear</a>
                 </button>
             </form>
