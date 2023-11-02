@@ -63,6 +63,14 @@
                   hx-target="#chat-scrollable-container"
                   hx-trigger="submit">
 
+                <button id="clear-button"
+                        type="button"
+                        class="h-9 px-4 bg-red-950 text-white rounded-lg hover:bg-red-700 transition duration-100 mt-1">
+                    <a href="{% url 'clear_conversation' %}">
+                        <i data-lucide="trash-2"></i>
+                    </a>
+                </button>
+
                 <input id="chat-input"
                        autocomplete="off"
                        autocapitalize="on"
@@ -75,15 +83,11 @@
                 <input type="hidden" name="selected_model" x-model="selectedModel">
 
                 <button id="send-button"
-                        class="h-9 w-3/12 sm:w-2/12 px-4 bg-indigo-950 disabled:bg-gray-300 disabled:cursor-not-allowed text-white rounded-lg hover:bg-indigo-700 transition duration-100 mt-1"
+                        class="h-9 px-4 bg-indigo-950 disabled:bg-gray-300 disabled:cursor-not-allowed text-white rounded-lg hover:bg-indigo-700 transition duration-100 mt-1"
                         type="submit">
-                    Send
+                    <i data-lucide="send-horizontal"></i>
                 </button>
-                <button id="clear-button"
-                        type="button"
-                        class="h-9 w-3/12 sm:w-2/12 px-4  bg-red-950 text-white rounded-lg hover:bg-red-700 transition duration-100 mt-1">
-                    <a href="{% url 'clear_conversation' %}">Clear</a>
-                </button>
+
             </form>
         </div>
     </div>

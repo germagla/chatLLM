@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% block title %}chatLLM{% endblock %}
+<!--
+// v0 by Vercel.
+// https://v0.dev/t/0NSrCiRHOnV
+-->
+<div class="h-screen flex overflow-hidden bg-gray-800 text-white">
+    <div class="flex flex-col w-64 border-r border-gray-600">
+        <div class="overflow-y-auto">
+            <nav class="mt-5 px-2 space-y-1"><a
+                    class="flex items-center px-2 py-2 text-base font-medium rounded-md text-white bg-gray-700"
+                    href="#">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                     stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                     class=" h-6 w-6">
+                    <path d="M17 6.1H3"></path>
+                    <path d="M21 12.1H3"></path>
+                    <path d="M15.1 18H3"></path>
+                </svg>
+                <span class="truncate">Chat 1</span></a><a
+                    class="flex items-center px-2 py-2 text-base font-medium rounded-md text-gray-300 hover:text-white hover:bg-gray-700"
+                    href="#">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                     stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                     class=" h-6 w-6">
+                    <path d="M17 6.1H3"></path>
+                    <path d="M21 12.1H3"></path>
+                    <path d="M15.1 18H3"></path>
+                </svg>
+                <span class="truncate">Chat 2</span></a></nav>
+        </div>
+    </div>
+    <div class="flex-1 flex flex-col overflow-hidden">
+        <main class="flex-1 overflow-y-auto p-4 space-y-4">
+            <div class="flex items-end space-x-2">
+                <div class="flex-none"><img src="/placeholder.svg" height="40" width="40" alt="Avatar"
+                                            class="rounded-full" style="aspect-ratio: 40 / 40; object-fit: cover;">
+                </div>
+                <div class="flex-grow bg-gray-700 text-white rounded-lg px-4 py-2"><span>Hello, how can I assist you today?</span>
+                </div>
+            </div>
+            <div class="flex items-end space-x-2">
+                <div class="flex-none ml-auto"><img src="/placeholder.svg" height="40" width="40" alt="Avatar"
+                                                    class="rounded-full"
+                                                    style="aspect-ratio: 40 / 40; object-fit: cover;"></div>
+                <div class="flex-grow bg-gray-600 text-white rounded-lg px-4 py-2 ml-2"><span>Hi, I need help with my order</span>
+                </div>
+            </div>
+        </main>
+        <div class="border-t border-gray-600 p-4">
+            <div class="flex space-x-3"><textarea
+                    class="flex min-h-[80px] w-full border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 flex-grow rounded-md"
+                    placeholder="Type your message"></textarea>
+                <button class="text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-primary/90 h-10 px-4 py-2 bg-blue-500 text-white rounded-md flex items-center justify-center">
+                    <i data-lucide="send-horizontal"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+{% block content %}
+{% endblock %}
