@@ -70,7 +70,7 @@ def process_prompt(request):
     except Exception as e:
         print(e)
         message_list.append({'role': 'assistant', 'content': 'Sorry, I am having trouble connecting to OpenAI.'})
-        return render(request, 'chatLLM/htmx/chat.html', {'messages': message_list[3:], 'models': models})
+        return render(request, 'chatLLM/Fragments/chat.html', {'messages': message_list[3:], 'models': models})
     # Create a message object for the response
     Message.objects.create(text=response.choices[0].message.content, role='assistant', conversation=conversation)
     # Save the messages
@@ -79,7 +79,7 @@ def process_prompt(request):
     # Create a list of messages
     message_list.append({'role': 'assistant', 'content': response.choices[0].message.content})
 
-    return render(request, 'chatLLM/htmx/chat.html', {'messages': message_list[3:], 'models': models})
+    return render(request, 'chatLLM/Fragments/chat.html', {'messages': message_list[3:], 'models': models})
 
 
 def clear_conversation(request):
